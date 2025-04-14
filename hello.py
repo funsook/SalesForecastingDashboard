@@ -7,16 +7,16 @@ from datetime import datetime
 import streamlit as st
 
 # Page config
-st.set_page_config(page_title="📈 Interactive Sales Forecasting", layout="wide")
+st.set_page_config(page_title="Interactive Sales Forecasting", layout="wide")
 
 # Header
-st.title("📊 Interactive Sales Forecasting Dashboard")
+st.title(" Interactive Sales Forecasting Dashboard")
 st.markdown("Upload your data or use sample data. Choose forecast period and method to see results.")
 
 # Sidebar
-st.sidebar.header("⚙️ Settings")
+st.sidebar.header("Settings")
 
-# 📁 File uploader
+# File uploader
 uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=['csv'])
 
 # Use uploaded data or fallback to default
@@ -66,27 +66,27 @@ forecast_df = pd.DataFrame({'Date': future_dates, 'Sales': future_sales})
 # Combine data
 full_df = pd.concat([df[['Date', 'Sales']], forecast_df], ignore_index=True)
 
-# 🔵 Plot: Forecast Chart
-st.subheader("📈 Forecast Chart")
+# Plot: Forecast Chart
+st.subheader("Forecast Chart")
 fig = px.line(full_df, x='Date', y='Sales', markers=True, title="Sales Forecast")
 fig.add_scatter(x=df['Date'], y=df['Sales'], mode='lines+markers', name='Actual')
 fig.add_scatter(x=forecast_df['Date'], y=forecast_df['Sales'], mode='lines+markers', name='Forecast')
 st.plotly_chart(fig, use_container_width=True)
 
-# 📊 Growth chart
+# Growth chart
 df['Growth %'] = df['Sales'].pct_change() * 100
-st.subheader("📉 Monthly Sales Growth")
+st.subheader("Monthly Sales Growth")
 fig2 = px.bar(df, x='Date', y='Growth %', title="Monthly Growth (%)", text_auto='.2f')
 st.plotly_chart(fig2, use_container_width=True)
 
-# 📄 Data Table
-with st.expander("📋 View Full Data Table"):
+# Data Table
+with st.expander("View Full Data Table"):
     st.dataframe(full_df, use_container_width=True)
 
-# 📥 Download forecast data
+# Download forecast data
 csv = forecast_df.to_csv(index=False).encode('utf-8')
 st.download_button(
-    label="⬇️ Download Forecasted Data as CSV",
+    label="Download Forecasted Data as CSV",
     data=csv,
     file_name='forecasted_sales.csv',
     mime='text/csv',
